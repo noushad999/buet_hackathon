@@ -1,0 +1,28 @@
+{
+  "heatmap_data": [
+    {"area": "মিরপুর", "area_en": "Mirpur", "lat": 23.8223, "lon": 90.3654, "service": "trade_license", "count": 145, "sentiment": "negative", "month": "2026-03"},
+    {"area": "গুলশান", "area_en": "Gulshan", "lat": 23.7805, "lon": 90.4170, "service": "passport", "count": 230, "sentiment": "neutral", "month": "2026-03"},
+    {"area": "ধানমন্ডি", "area_en": "Dhanmondi", "lat": 23.7465, "lon": 90.3765, "service": "birth_certificate", "count": 89, "sentiment": "positive", "month": "2026-03"},
+    {"area": "উত্তরা", "area_en": "Uttara", "lat": 23.8759, "lon": 90.3795, "service": "tin_certificate", "count": 312, "sentiment": "positive", "month": "2026-03"},
+    {"area": "বনানী", "area_en": "Banani", "lat": 23.7925, "lon": 90.4078, "service": "passport", "count": 178, "sentiment": "negative", "month": "2026-03"},
+    {"area": "মোহাম্মদপুর", "area_en": "Mohammadpur", "lat": 23.7644, "lon": 90.3565, "service": "land_deed", "count": 67, "sentiment": "negative", "month": "2026-03"},
+    {"area": "তেজগাঁও", "area_en": "Tejgaon", "lat": 23.7610, "lon": 90.3890, "service": "trade_license", "count": 198, "sentiment": "neutral", "month": "2026-03"},
+    {"area": "শাহবাগ", "area_en": "Shahbag", "lat": 23.7390, "lon": 90.3950, "service": "birth_certificate", "count": 56, "sentiment": "positive", "month": "2026-03"},
+    {"area": "মতিঝিল", "area_en": "Motijheel", "lat": 23.7330, "lon": 90.4170, "service": "tin_certificate", "count": 245, "sentiment": "neutral", "month": "2026-03"},
+    {"area": "পল্টন", "area_en": "Paltan", "lat": 23.7315, "lon": 90.4130, "service": "passport", "count": 134, "sentiment": "negative", "month": "2026-03"}
+  ],
+  "service_demand_summary": {
+    "trade_license": {"total_applications": 343, "avg_satisfaction": 2.8, "peak_area": "মিরপুর"},
+    "passport": {"total_applications": 542, "avg_satisfaction": 2.3, "peak_area": "গুলশান"},
+    "birth_certificate": {"total_applications": 145, "avg_satisfaction": 4.1, "peak_area": "ধানমন্ডি"},
+    "tin_certificate": {"total_applications": 557, "avg_satisfaction": 3.9, "peak_area": "উত্তরা"},
+    "land_deed": {"total_applications": 67, "avg_satisfaction": 1.9, "peak_area": "মোহাম্মদপুর"}
+  },
+  "nagarai_contribution": {
+    "total_users_served": 12450,
+    "avg_time_saved_minutes": 45,
+    "success_rate_percent": 87,
+    "top_service": "tin_certificate",
+    "improvement_over_myGov": "+34%"
+  }
+}

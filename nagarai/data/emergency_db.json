@@ -1,0 +1,148 @@
+{
+  "hospitals": [
+    {
+      "id": "h1",
+      "name_bn": "ঢাকা মেডিকেল কলেজ হাসপাতাল",
+      "name_en": "Dhaka Medical College Hospital",
+      "type": "government",
+      "lat": 23.7275,
+      "lon": 90.3911,
+      "phone": "02-55165088",
+      "emergency": true,
+      "beds_available": 45,
+      "specialties": ["emergency", "trauma", "cardiology"]
+    },
+    {
+      "id": "h2",
+      "name_bn": "বঙ্গবন্ধু শেখ মুজিব মেডিকেল বিশ্ববিদ্যালয়",
+      "name_en": "BSMMU",
+      "type": "government",
+      "lat": 23.7325,
+      "lon": 90.3856,
+      "phone": "02-55165300",
+      "emergency": true,
+      "beds_available": 30,
+      "specialties": ["emergency", "neurology", "oncology"]
+    },
+    {
+      "id": "h3",
+      "name_bn": "স্কয়ার হাসপাতাল",
+      "name_en": "Square Hospital",
+      "type": "private",
+      "lat": 23.7563,
+      "lon": 90.3775,
+      "phone": "02-8144400",
+      "emergency": true,
+      "beds_available": 12,
+      "specialties": ["emergency", "cardiology", "orthopedics"]
+    },
+    {
+      "id": "h4",
+      "name_bn": "ইবনে সিনা হাসপাতাল",
+      "name_en": "Ibn Sina Hospital",
+      "type": "private",
+      "lat": 23.7645,
+      "lon": 90.3683,
+      "phone": "02-9130824",
+      "emergency": true,
+      "beds_available": 8,
+      "specialties": ["emergency", "general medicine"]
+    }
+  ],
+  "pharmacies": [
+    {
+      "id": "p1",
+      "name_bn": "লায়ন্স ফার্মেসি",
+      "name_en": "Lion Pharmacy",
+      "lat": 23.7310,
+      "lon": 90.3900,
+      "phone": "01712345678",
+      "open_24h": true
+    },
+    {
+      "id": "p2",
+      "name_bn": "সেবা ফার্মেসি",
+      "name_en": "Seba Pharmacy",
+      "lat": 23.7450,
+      "lon": 90.3820,
+      "phone": "01812345679",
+      "open_24h": false,
+      "open_hour": 8,
+      "close_hour": 22,
+      "hours": "8AM-10PM"
+    }
+  ],
+  "photo_studios": [
+    {
+      "id": "ps1",
+      "name_bn": "আগারগাঁও ফটো স্টুডিও",
+      "name_en": "Agargaon Photo Studio",
+      "lat": 23.7555,
+      "lon": 90.3788,
+      "phone": "02-55012345",
+      "address_bn": "আগারগাঁও, পাসপোর্ট অফিসের পাশে",
+      "verified": true,
+      "open_hour": 9,
+      "close_hour": 18
+    },
+    {
+      "id": "ps2",
+      "name_bn": "শেরে বাংলা নগর ফটো পয়েন্ট",
+      "name_en": "Sher-e-Bangla Photo Point",
+      "lat": 23.7600,
+      "lon": 90.3750,
+      "phone": "01712345678",
+      "address_bn": "শেরে বাংলা নগর, ঢাকা",
+      "verified": true,
+      "open_hour": 8,
+      "close_hour": 20
+    },
+    {
+      "id": "ps3",
+      "name_bn": "মিরপুর ফটো সেন্টার",
+      "name_en": "Mirpur Photo Center",
+      "lat": 23.7900,
+      "lon": 90.3650,
+      "phone": "01912345678",
+      "address_bn": "মিরপুর-১০, ঢাকা",
+      "verified": true,
+      "open_hour": 9,
+      "close_hour": 19
+    }
+  ],
+  "police_stations": [
+    {
+      "id": "ps1",
+      "name_bn": "শাহবাগ থানা",
+      "name_en": "Shahbag Thana",
+      "lat": 23.7390,
+      "lon": 90.3950,
+      "phone": "02-8312037",
+      "emergency_hotline": "999"
+    },
+    {
+      "id": "ps2",
+      "name_bn": "ধানমন্ডি থানা",
+      "name_en": "Dhanmondi Thana",
+      "lat": 23.7465,
+      "lon": 90.3765,
+      "phone": "02-9122450",
+      "emergency_hotline": "999"
+    },
+    {
+      "id": "ps3",
+      "name_bn": "গুলশান থানা",
+      "name_en": "Gulshan Thana",
+      "lat": 23.7805,
+      "lon": 90.4170,
+      "phone": "02-8823456",
+      "emergency_hotline": "999"
+    }
+  ],
+  "emergency_contacts": {
+    "national_emergency": "999",
+    "fire_service": "02-8111111",
+    "ambulance": "02-8144400",
+    "disaster_management": "02-9555500"
+  }
+}

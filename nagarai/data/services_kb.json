@@ -1,0 +1,66 @@
+{
+  "services": [
+    {
+      "id": "trade_license",
+      "name_bn": "ট্রেড লাইসেন্স",
+      "name_en": "Trade License",
+      "category": "license",
+      "fee": 1500,
+      "required_docs": ["ন্যাশনাল আইডি কার্ড", "হালকা সনদ", "ভাড়া চুক্তিনামা"],
+      "processing_days": 7,
+      "authority": "সিটি কর্পোরেশন",
+      "description_bn": "ব্যবসা পরিচালনার জন্য ট্রেড লাইসেন্স আবেদন"
+    },
+    {
+      "id": "birth_certificate",
+      "name_bn": "জন্ম সনদ",
+      "name_en": "Birth Certificate",
+      "category": "certificate",
+      "fee": 0,
+      "required_docs": ["হাসপাতালের সনদ", "অভিভাবকের আইডি"],
+      "processing_days": 14,
+      "authority": "ইউনিয়ন পরিষদ/পৌরসভা",
+      "description_bn": "জন্ম নিবন্ধন সনদপত্র"
+    },
+    {
+      "id": "passport",
+      "name_bn": "পাসপোর্ট",
+      "name_en": "Passport",
+      "category": "identity",
+      "fee": 3450,
+      "required_docs": ["জাতীয় পরিচয়পত্র", "শিক্ষাগত সনদের সত্যায়িত কপি"],
+      "processing_days": 21,
+      "authority": "ইমিগ্রেশন অফিস",
+      "description_bn": "যান্ত্রিক পাসপোর্ট আবেদন (৩ বছর মেয়াদ)"
+    },
+    {
+      "id": "tin_certificate",
+      "name_bn": "টিন সনদ",
+      "name_en": "TIN Certificate",
+      "category": "tax",
+      "fee": 0,
+      "required_docs": ["জাতীয় পরিচয়পত্র", "মোবাইল নম্বর"],
+      "processing_days": 1,
+      "authority": "জাতীয় রাজস্ব বোর্ড",
+      "description_bn": "ই-টিন রেজিস্ট্রেশন সনদপত্র"
+    },
+    {
+      "id": "land_deed",
+      "name_bn": "জমির দলিল",
+      "name_en": "Land Deed Registration",
+      "category": "property",
+      "fee": 5000,
+      "required_docs": ["খতিয়ান", "নামজারি কাগজ", "দলিলের কপি"],
+      "processing_days": 30,
+      "authority": "সাব-রেজিস্ট্রার অফিস",
+      "description_bn": "জমি ক্রয়-বিক্রয় দলিল নিবন্ধন"
+    }
+  ],
+  "intents": {
+    "trade_license": ["ট্রেড লাইসেন্স", "ব্যবসা লাইসেন্স", "দোকান লাইসেন্স", "trade license"],
+    "birth_certificate": ["জন্ম সনদ", "জন্ম নিবন্ধন", "birth certificate", "জন্ম"],
+    "passport": ["পাসপোর্ট", "passport", "বিদেশ যাত্রা"],
+    "tin_certificate": ["টিন সনদ", "tin", "tax", "ট্যাক্স"],
+    "land_deed": ["দলিল", "জমি", "land", "property", "সম্পত্তি"]
+  }
+}
