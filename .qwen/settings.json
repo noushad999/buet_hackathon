@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir *)",
+      "Bash(dir *)",
+      "Bash(taskkill *)",
+      "Bash(select-object *)",
+      "Bash(del *)"
+    ]
+  },
+  "$version": 3
+}

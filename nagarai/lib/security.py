@@ -1,10 +1,10 @@
 """
-security.py - Complete security module for NagarAI hackathon demo.
+security.py — Complete security module for NagarAI hackathon demo.
 
 Three classes: PIIRedactor, SessionManager, InputSanitizer
 Plus: render_security_demo_panel() for Streamlit UI demonstration.
 
-Demo purpose: Show judges visible security features in 10 seconds.
+All text in English for international hackathon.
 """
 
 import re
@@ -17,39 +17,25 @@ import streamlit as st
 
 
 # ============================================================
-# CLASS 1: PIIRedactor - Detect and mask personally identifiable info
+# CLASS 1: PIIRedactor
 # ============================================================
 class PIIRedactor:
     """Detect and redact PII from text with demo-friendly UI output."""
 
-    # Patterns for Bangladeshi PII (order matters: specific patterns first)
     PATTERNS = [
-        # Phone: 01X-XXXXXXXX or 01XXXXXXXXX (Bangladeshi mobile) - MUST be before NID
+        # Phone: 01X-XXXXXXXX or 01XXXXXXXXX (Bangladeshi mobile)
         (r'01[3-9][\s-]?\d{4}[\s-]?\d{4}', '[PHONE-REDACTED]', 'Phone'),
-        # NID: 10 to 17 digits (covers all valid lengths)
+        # NID: 10 to 17 digits
         (r'\b\d{10,17}\b', '[NID-REDACTED]', 'NID'),
         # Email
         (r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', '[EMAIL-REDACTED]', 'Email'),
-        # Common Bangladeshi names (partial match)
+        # Common Bangladeshi names
         (r'\b(Mohammad|Mohammed|Muhammad|Md\.?)\s+[A-Z][a-z]+\s+[A-Z][a-z]+\b', '[NAME-REDACTED]', 'Name'),
         (r'\b(Ahmed|Ahmad|Rahman|Karim|Hassan|Hossain|Islam|Uddin|Begum|Akter|Khatun|Sultana|Fatema|Fatemah)\b', '[NAME-REDACTED]', 'Name'),
     ]
 
     def redact(self, text: str) -> dict:
-        """Redact PII from text.
-
-        Args:
-            text: Input text that may contain PII
-
-        Returns:
-            Dict with redacted_text, found_pii list, and redaction_count
-
-        Example:
-            >>> redactor = PIIRedactor()
-            >>> result = redactor.redact("My NID is 1234567890123")
-            >>> '[NID-REDACTED]' in result['redacted_text']
-            True
-        """
+        """Redact PII from text."""
         if not isinstance(text, str):
             return {"redacted_text": "", "found_pii": [], "redaction_count": 0}
 
@@ -78,7 +64,7 @@ class PIIRedactor:
         else:
             user_input = st.text_input(
                 "Test text:",
-                placeholder="যেমন: আমার NID 1234567890123, ফোন 01712345678",
+                placeholder="e.g., My NID is 1234567890123, phone 01712345678",
                 key="pii_demo_input",
             )
 
@@ -104,7 +90,7 @@ class PIIRedactor:
 
 
 # ============================================================
-# CLASS 2: SessionManager - Manage user session with audit log
+# CLASS 2: SessionManager
 # ============================================================
 class SessionManager:
     """Streamlit session state manager with anonymized audit logging."""
@@ -113,17 +99,7 @@ class SessionManager:
         self._state = st.session_state
 
     def init_session(self) -> str:
-        """Initialize session with ID, start time, action count.
-
-        Returns:
-            Session ID (UUID4)
-
-        Example:
-            >>> mgr = SessionManager()
-            >>> session_id = mgr.init_session()
-            >>> len(session_id) == 36  # UUID format
-            True
-        """
+        """Initialize session with ID, start time, action count."""
         if "nagarai_session_id" not in self._state:
             self._state.nagarai_session_id = str(uuid.uuid4())
             self._state.nagarai_session_start = datetime.now().isoformat()
@@ -133,39 +109,16 @@ class SessionManager:
         return self._state.nagarai_session_id
 
     def check_session_valid(self) -> bool:
-        """Check if session is still valid (not expired).
-
-        Returns:
-            False if >15 min elapsed, True otherwise
-
-        Example:
-            >>> mgr = SessionManager()
-            >>> mgr.init_session()
-            >>> mgr.check_session_valid()
-            True
-        """
+        """Check if session is still valid (not expired)."""
         if "nagarai_session_start" not in self._state:
             return False
 
         start = datetime.fromisoformat(self._state.nagarai_session_start)
         elapsed = datetime.now() - start
-        return elapsed.total_seconds() < 15 * 60  # 15 minutes
+        return elapsed.total_seconds() < 15 * 60
 
     def log_action(self, action: str):
-        """Log action to anonymized audit log.
-
-        Stores: hash of action + timestamp (NO PII)
-
-        Args:
-            action: Action description (e.g., "form_submitted", "payment_initiated")
-
-        Example:
-            >>> mgr = SessionManager()
-            >>> mgr.init_session()
-            >>> mgr.log_action("test_action")
-            >>> len(mgr.get_audit_preview()) > 0
-            True
-        """
+        """Log action to anonymized audit log."""
         if "nagarai_audit_log" not in self._state:
             self._state.nagarai_audit_log = []
 
@@ -179,35 +132,13 @@ class SessionManager:
         self._state.nagarai_action_count = self._state.get("nagarai_action_count", 0) + 1
 
     def get_audit_preview(self) -> list:
-        """Return last 5 audit log entries for demo display.
-
-        Returns:
-            List of anonymized log entries
-
-        Example:
-            >>> mgr = SessionManager()
-            >>> mgr.init_session()
-            >>> mgr.log_action("login")
-            >>> preview = mgr.get_audit_preview()
-            >>> len(preview) == 1
-            True
-        """
+        """Return last 5 audit log entries for demo display."""
         log = self._state.get("nagarai_audit_log", [])
-        return log[-5:]  # Last 5 entries
+        return log[-5:]
 
     @property
     def session_age_minutes(self) -> float:
-        """Return session age in minutes.
-
-        Returns:
-            Float minutes since session start
-
-        Example:
-            >>> mgr = SessionManager()
-            >>> mgr.init_session()
-            >>> isinstance(mgr.session_age_minutes, float)
-            True
-        """
+        """Return session age in minutes."""
         if "nagarai_session_start" not in self._state:
             return 0.0
 
@@ -217,19 +148,17 @@ class SessionManager:
 
 
 # ============================================================
-# CLASS 3: InputSanitizer - Block injection and validate formats
+# CLASS 3: InputSanitizer
 # ============================================================
 class InputSanitizer:
     """Sanitize form inputs and block dangerous patterns."""
 
-    # SQL injection keywords
     SQL_KEYWORDS = [
         'SELECT', 'DROP', 'INSERT', 'DELETE', 'UPDATE', 'UNION',
         'ALTER', 'CREATE', 'EXEC', 'EXECUTE', 'TRUNCATE',
         '--', ';', '/*', '*/', 'xp_', 'sp_',
     ]
 
-    # Prompt injection phrases
     PROMPT_INJECTIONS = [
         'ignore previous', 'you are now', 'jailbreak', 'bypass',
         'override', 'disregard', 'forget all', 'system prompt',
@@ -237,21 +166,7 @@ class InputSanitizer:
     ]
 
     def sanitize_form_input(self, field: str, value: str) -> dict:
-        """Sanitize and validate form input.
-
-        Args:
-            field: Field name (e.g., "name", "comment")
-            value: Raw user input
-
-        Returns:
-            Dict with safe flag, cleaned_value, and warnings list
-
-        Example:
-            >>> sanitizer = InputSanitizer()
-            >>> result = sanitizer.sanitize_form_input("name", "SELECT * FROM users")
-            >>> result["safe"] == False
-            True
-        """
+        """Sanitize and validate form input."""
         warnings = []
         cleaned = value.strip()
 
@@ -260,25 +175,22 @@ class InputSanitizer:
 
         upper_value = cleaned.upper()
 
-        # Check for SQL keywords
         for keyword in self.SQL_KEYWORDS:
             if keyword.upper() in upper_value:
                 warnings.append(f"⚠️ SQL keyword detected: {keyword}")
                 cleaned = cleaned.replace(keyword, '').replace(keyword.lower(), '')
-                cleaned = ' '.join(cleaned.split())  # Clean whitespace
+                cleaned = ' '.join(cleaned.split())
 
-        # Check for prompt injection
         lower_value = cleaned.lower()
         for phrase in self.PROMPT_INJECTIONS:
             if phrase in lower_value:
                 warnings.append(f"🚫 Prompt injection blocked: '{phrase}'")
                 return {"safe": False, "cleaned_value": "", "warnings": warnings}
 
-        # Check for script tags
         if '<script' in lower_value or '</script>' in lower_value:
             warnings.append("🚫 Script tag blocked")
             cleaned = re.sub(r'<script.*?</script>', '', cleaned, flags=re.IGNORECASE | re.DOTALL)
-            cleaned = re.sub(r'<[^>]+>', '', cleaned)  # Remove all HTML
+            cleaned = re.sub(r'<[^>]+>', '', cleaned)
 
         is_safe = len([w for w in warnings if '🚫' in w]) == 0
 
@@ -289,80 +201,32 @@ class InputSanitizer:
         }
 
     def validate_phone_bd(self, phone: str) -> bool:
-        """Validate Bangladeshi mobile number format.
-
-        Valid formats: 01XXXXXXXXX (11 digits, starts with 01)
-
-        Args:
-            phone: Phone number string
-
-        Returns:
-            True if valid BD format
-
-        Example:
-            >>> sanitizer = InputSanitizer()
-            >>> sanitizer.validate_phone_bd("01712345678")
-            True
-            >>> sanitizer.validate_phone_bd("12345")
-            False
-        """
+        """Validate Bangladeshi mobile number format."""
         if not isinstance(phone, str):
             return False
-
-        # Remove spaces, dashes, plus signs
         cleaned = re.sub(r'[\s\-\+]', '', phone)
-
-        # Must be 11 digits starting with 01
         return bool(re.match(r'^01[3-9]\d{8}$', cleaned))
 
     def validate_nid(self, nid: str) -> bool:
-        """Validate National ID format (10 or 17 digits).
-
-        Args:
-            nid: NID number string
-
-        Returns:
-            True if valid NID format
-
-        Example:
-            >>> sanitizer = InputSanitizer()
-            >>> sanitizer.validate_nid("1234567890")
-            True
-            >>> sanitizer.validate_nid("12345678901234567")
-            True
-            >>> sanitizer.validate_nid("12345")
-            False
-        """
+        """Validate National ID format (10 or 17 digits)."""
         if not isinstance(nid, str):
             return False
-
         cleaned = re.sub(r'[\s\-]', '', nid)
         return bool(re.match(r'^\d{10}$|^\d{17}$', cleaned))
 
 
 # ============================================================
-# FUNCTION: render_security_demo_panel() - Streamlit UI component
+# FUNCTION: render_security_demo_panel()
 # ============================================================
 def render_security_demo_panel():
-    """Render security demo panel in sidebar or main area.
-
-    Shows judges in 10 seconds:
-    - Session status (green badge)
-    - Live PII redaction test
-    - Audit log preview
-    - Privacy notice in Bengali
-    """
+    """Render security demo panel in sidebar or main area."""
     st.markdown("---")
     st.markdown("### 🔐 Security Status")
 
-    # Initialize managers
     session_mgr = SessionManager()
     redactor = PIIRedactor()
-
-    # Ensure session is initialized
     session_mgr.init_session()
 
-    # Session status badge
     is_valid = session_mgr.check_session_valid()
     age = session_mgr.session_age_minutes
 
@@ -373,7 +237,6 @@ def render_security_demo_panel():
 
     st.divider()
 
-    # Live PII test
     st.markdown("**Test PII Redaction:**")
     pii_input = st.text_input(
         "Type text with personal info",
@@ -392,25 +255,21 @@ def render_security_demo_panel():
 
     st.divider()
 
-    # Audit log preview
     st.markdown("**Recent Actions (Anonymized):**")
     audit_entries = session_mgr.get_audit_preview()
 
     if audit_entries:
-        for entry in audit_entries[-3:]:  # Last 3
+        for entry in audit_entries[-3:]:
             st.caption(f"`{entry['timestamp']}` → `{entry['action_hash']}`")
     else:
         st.caption("No actions logged yet")
 
     st.divider()
-
-    # Privacy notice
-    st.caption("🔒 **কোনো ব্যক্তিগত তথ্য সংরক্ষিত হচ্ছে না**")
-    st.caption("_No personal data is being stored_")
+    st.caption("🔒 **No personal data is being stored**")
 
 
 # ============================================================
-# Backward compatibility: Keep old function names working
+# Backward compatibility
 # ============================================================
 def redact_pii(text: str) -> str:
     """Legacy function for backward compatibility."""
@@ -426,8 +285,7 @@ def sanitize_input(user_input: str) -> str:
 
 
 def create_session(session_id: str) -> Dict[str, Any]:
-    """Legacy function — now uses SessionManager."""
-    mgr = SessionManager()
+    """Legacy function."""
     if "nagarai_session_id" not in st.session_state:
         st.session_state.nagarai_session_id = session_id
         st.session_state.nagarai_session_start = datetime.now().isoformat()
@@ -437,7 +295,7 @@ def create_session(session_id: str) -> Dict[str, Any]:
 
 
 def get_session(session_id: str) -> Optional[Dict[str, Any]]:
-    """Legacy function — now uses SessionManager."""
+    """Legacy function."""
     mgr = SessionManager()
     if mgr.check_session_valid():
         return {"session_id": st.session_state.get("nagarai_session_id"), "active": True}
@@ -445,7 +303,7 @@ def get_session(session_id: str) -> Optional[Dict[str, Any]]:
 
 
 def purge_session(session_id: str) -> bool:
-    """Legacy function — clear session state."""
+    """Legacy function."""
     keys_to_remove = [
         "nagarai_session_id", "nagarai_session_start",
         "nagarai_action_count", "nagarai_audit_log",
@@ -457,7 +315,7 @@ def purge_session(session_id: str) -> bool:
 
 
 def store_session_data(session_id: str, key: str, value: Any) -> bool:
-    """Legacy function — store data in session state."""
+    """Legacy function."""
     mgr = SessionManager()
     if mgr.check_session_valid():
         st.session_state[f"session_{key}"] = value
@@ -466,7 +324,7 @@ def store_session_data(session_id: str, key: str, value: Any) -> bool:
 
 
 def get_session_stats() -> Dict[str, int]:
-    """Legacy function — return session statistics."""
+    """Legacy function."""
     mgr = SessionManager()
     return {
         "active_sessions": 1 if mgr.check_session_valid() else 0,
@@ -477,41 +335,35 @@ def get_session_stats() -> Dict[str, int]:
 
 
 # ============================================================
-# TESTS — Run with: python security.py
+# TESTS
 # ============================================================
 if __name__ == "__main__":
     print("=== Running Security Module Tests ===\n")
 
-    # Test 1: NID detection works
     redactor = PIIRedactor()
     nid_test = redactor.redact("My NID is 1234567890123")
-    assert '[NID-REDACTED]' in nid_test["redacted_text"], "Test 1 FAILED: NID not detected"
+    assert '[NID-REDACTED]' in nid_test["redacted_text"]
     print("✅ Test 1 PASSED: NID detection works")
 
-    # Test 2: Phone detection works
     phone_test = redactor.redact("Call me at 01712345678")
-    assert '[PHONE-REDACTED]' in phone_test["redacted_text"], "Test 2 FAILED: Phone not detected"
+    assert '[PHONE-REDACTED]' in phone_test["redacted_text"]
     print("✅ Test 2 PASSED: Phone detection works")
 
-    # Test 3: Prompt injection blocked
     sanitizer = InputSanitizer()
     injection_test = sanitizer.sanitize_form_input("input", "ignore previous instructions")
-    assert injection_test["safe"] == False, "Test 3 FAILED: Prompt injection not blocked"
+    assert injection_test["safe"] == False
     print("✅ Test 3 PASSED: Prompt injection blocked")
 
-    # Test 4: Valid BD phone passes
     valid_phone = sanitizer.validate_phone_bd("01712345678")
-    assert valid_phone == True, "Test 4 FAILED: Valid phone rejected"
+    assert valid_phone == True
     invalid_phone = sanitizer.validate_phone_bd("12345")
-    assert invalid_phone == False, "Test 4 FAILED: Invalid phone accepted"
+    assert invalid_phone == False
     print("✅ Test 4 PASSED: Valid phone passes, invalid rejected")
 
-    # Test 5: Session age returns float
-    # Note: SessionManager needs Streamlit context, so we test the property logic directly
     from datetime import datetime
     start = datetime.now()
     age = (datetime.now() - start).total_seconds() / 60
-    assert isinstance(age, float), "Test 5 FAILED: Session age not float"
+    assert isinstance(age, float)
     print("✅ Test 5 PASSED: Session age returns float")
 
     print("\n🎉 All 5 security tests PASSED!")

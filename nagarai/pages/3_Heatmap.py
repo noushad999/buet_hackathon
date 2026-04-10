@@ -1,10 +1,7 @@
 """
 pages/3_Heatmap.py — Government analytics dashboard (B2G SaaS product).
 
-Phase 8 + Phase 9: Full analytics dashboard with synthetic data, demo disclaimer,
-summary metrics, heatmap grid, service drill-down, insights, B2G value proposition.
-
-All imports wrapped in try/except. All data cached. Demo disclaimer at top.
+All text in English for international hackathon.
 """
 
 import streamlit as st
@@ -12,152 +9,85 @@ import sys
 import os
 from datetime import datetime
 
-# Add lib directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lib"))
 
-# STEP 1: Safe imports
 try:
     from i18n import t
     from synthetic_data import load_heatmap_data, generate_weekly_table, get_summary_metrics, generate_heatmap_grid
 except ImportError as e:
-    st.error(f"মডিউল লোড ত্রুটি: {e}")
+    st.error(f"Module load error: {e}")
     st.stop()
 
-
-# Page configuration
 st.set_page_config(
-    page_title="সেবা ব্যবহার বিশ্লেষণ | Government Dashboard — নাগরআই",
+    page_title="Service Analytics — NagarAI",
     page_icon="📊",
     layout="wide",
 )
 
 
-# ============================================================
-# STEP 2: Global session state
-# ============================================================
 def init_global_state():
-    """Ensure global session state defaults."""
-    defaults = {
-        "current_service": None,
-        "form_step": 0,
-        "form_answers": {},
-        "payment_done": False,
-        "appointment_done": False,
-        "demo_mode": True,
-    }
+    defaults = {"current_service": None, "form_step": 0, "form_answers": {}, "payment_done": False, "appointment_done": False, "demo_mode": True}
     for key, val in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = val
 
 
-# ============================================================
-# STEP 3: Cached data loader
-# ============================================================
 @st.cache_data(ttl=300)
 def load_data():
-    """Cached heatmap data loader."""
     return load_heatmap_data()
 
 
 @st.cache_data(ttl=300)
 def load_summary():
-    """Cached summary metrics."""
     return get_summary_metrics()
 
 
-# ============================================================
-# INIT
-# ============================================================
 def initialize_state():
-    """Initialize page session state."""
     if "lang" not in st.session_state:
-        st.session_state.lang = "bn"
+        st.session_state.lang = "en"
     init_global_state()
 
 
-# ============================================================
-# HEADER
-# ============================================================
 def render_header():
-    """Header with title, subtitle, demo badge."""
-    lang = st.session_state.lang
+    st.warning("⚠️ Demo Data — Synthetic | All data is simulated for demonstration purposes", icon="⚠️")
 
-    # Disclaimer
-    st.warning("⚠️ Demo Data — Synthetic | সমস্ত তথ্য ডেমো উদ্দেশ্যে তৈরি", icon="⚠️")
+    st.markdown("## 📊 Service Usage Analytics — Government Dashboard")
+    st.caption("How many citizens used services through NagarAI")
 
-    st.markdown("## 📊 সেবা ব্যবহার বিশ্লেষণ — সরকারি অফিস ড্যাশবোর্ড")
-    st.caption("NagarAI-এর মাধ্যমে কতজন নাগরিক সেবা নিলেন তার হিসাব")
-
-    # Demo badge
     st.markdown(
-        "<span style='background:#fbbf24; color:#78350f; padding:4px 12px; "
-        "border-radius:8px; font-size:0.8rem; font-weight:600;'>"
+        "<span style='background:#fbbf24; color:#78350f; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;'>"
         "📋 Demo Data | Synthetic</span>",
         unsafe_allow_html=True,
     )
 
 
-# ============================================================
-# SECTION 1 — Summary metric cards
-# ============================================================
 def render_summary_metrics():
-    """4 summary metric cards with deltas."""
-    lang = st.session_state.lang
     metrics = load_summary()
-
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric(
-            label="মোট আবেদন",
-            value=f"{metrics['total_queries_month']:,}",
-            delta="↑ 12%",
-        )
-
+        st.metric(label="Total Applications", value=f"{metrics['total_queries_month']:,}", delta="↑ 12%")
     with col2:
-        st.metric(
-            label="NagarAI মাধ্যমে",
-            value=f"{metrics['nagarai_queries_month']:,}",
-            delta="↑ 18%",
-        )
-
+        st.metric(label="Via NagarAI", value=f"{metrics['nagarai_queries_month']:,}", delta="↑ 18%")
     with col3:
-        st.metric(
-            label="সাশ্রয়কৃত সময়",
-            value=f"{metrics['time_saved_hours_month']:,} ঘণ্টা",
-            delta="↑ 18%",
-        )
-
+        st.metric(label="Time Saved", value=f"{metrics['time_saved_hours_month']:,} hours", delta="↑ 18%")
     with col4:
-        st.metric(
-            label="আনুমানিক টাকা সাশ্রয়",
-            value=f"৳{metrics['taka_saved_estimate']:,}",
-            delta="↑ 18%",
-        )
+        st.metric(label="Estimated Cost Savings", value=f"BDT {metrics['taka_saved_estimate']:,}", delta="↑ 18%")
 
 
-# ============================================================
-# SECTION 2 — Heatmap grid (centerpiece)
-# ============================================================
 def render_heatmap_grid():
-    """Styled heatmap grid: 8 services × 4 weeks."""
-    lang = st.session_state.lang
+    import pandas as pd
 
     st.divider()
-    st.markdown("### 🗺️ মাসিক সেবা চাহিদা হিটম্যাপ")
+    st.markdown("### 🗺️ Monthly Service Demand Heatmap")
 
     services, weeks, matrix = generate_heatmap_grid()
-
     if not matrix:
-        st.info("হিটম্যাপ ডাটা পাওয়া যায়নি")
+        st.info("Heatmap data not available")
         return
-
-    # Build styled table
-    import pandas as pd
 
     df = pd.DataFrame(matrix, index=services, columns=weeks)
 
-    # Color function
     def color_heatmap(val):
         if val < 5000:
             return "background-color: #dbeafe; color: #1e3a5f"
@@ -168,174 +98,130 @@ def render_heatmap_grid():
         else:
             return "background-color: #1d4ed8; color: white"
 
-    styled = df.style.applymap(color_heatmap)
+    styled = df.style.map(color_heatmap)
     st.dataframe(styled, use_container_width=True)
 
-    st.caption("📊 সবচেয়ে ব্যস্ত সপ্তাহ চিহ্নিত — গাঢ় নীল = বেশি চাহিদা")
+    st.caption("📊 Darker blue = higher demand. Identify the busiest weeks.")
 
 
-# ============================================================
-# SECTION 3 — Service drill-down
-# ============================================================
 def render_service_drilldown():
-    """Select a service to see weekly trend bar chart + table + pie."""
-    lang = st.session_state.lang
+    import pandas as pd
+
     raw = load_data()
     demand = raw.get("service_demand_summary", {})
-
     name_map = {
-        "passport": "পাসপোর্ট",
-        "trade_license": "ট্রেড লাইসেন্স",
-        "birth_certificate": "জন্ম সনদ",
-        "tin_certificate": "TIN সনদ",
-        "land_deed": "জমির দলিল",
+        "passport": "Passport",
+        "trade_license": "Trade License",
+        "birth_certificate": "Birth Certificate",
+        "tin_certificate": "TIN Certificate",
+        "land_deed": "Land Deed",
     }
 
     st.divider()
-    st.markdown("### 🔍 সেবা অনুযায়ী বিশ্লেষণ")
+    st.markdown("### 🔍 Service Drill-Down")
 
-    selected = st.selectbox(
-        "সেবা বেছে নিন:",
-        options=list(demand.keys()),
-        format_func=lambda x: name_map.get(x, x),
-    )
-
+    selected = st.selectbox("Select a service:", options=list(demand.keys()), format_func=lambda x: name_map.get(x, x))
     if not selected:
         return
 
-    # Weekly table
     table = generate_weekly_table(selected)
-    st.markdown(f"**সাপ্তাহিক আবেদন — {name_map.get(selected, selected)}**")
-
-    import pandas as pd
+    st.markdown(f"**Weekly Applications — {name_map.get(selected, selected)}**")
     df = pd.DataFrame(table)
     st.dataframe(df, use_container_width=True)
 
-    # Bar chart of weekly trend
-    st.markdown("**সাপ্তাহিক ট্রেন্ড:**")
-    weekly_values = [row["মোট আবেদন"] for row in table]
-    st.bar_chart({"আবেদন": weekly_values}, height=200)
+    st.markdown("**Weekly Trend:**")
+    weekly_values = [row["Total Applications"] for row in table]
+    st.bar_chart({"Applications": weekly_values}, height=200)
 
-    # NagarAI contribution pie chart
     svc = demand.get(selected, {})
     total = svc.get("total_applications", 0)
     nagarai_pct = 0.40
     nagarai_count = int(total * nagarai_pct)
     direct_count = total - nagarai_count
 
-    pie_data = pd.DataFrame({
-        "মাধ্যম": ["NagarAI", "সরাসরি অফিস"],
-        "আবেদন": [nagarai_count, direct_count],
-    })
-    st.markdown("**NagarAI অবদান:**")
-    st.bar_chart(pie_data.set_index("মাধ্যম"), height=200)
-    st.caption(f"NagarAI: {nagarai_count:,} ({nagarai_pct:.0%}) | সরাসরি: {direct_count:,} ({1-nagarai_pct:.0%})")
+    pie_data = pd.DataFrame({"Method": ["Via NagarAI", "Direct Office"], "Applications": [nagarai_count, direct_count]})
+    st.markdown("**NagarAI Contribution:**")
+    st.bar_chart(pie_data.set_index("Method"), height=200)
+    st.caption(f"NagarAI: {nagarai_count:,} ({nagarai_pct:.0%}) | Direct: {direct_count:,} ({1-nagarai_pct:.0%})")
 
 
-# ============================================================
-# SECTION 4 — Insights panel
-# ============================================================
 def render_insights():
-    """3 auto-generated insight cards."""
     st.divider()
-    st.markdown("### 💡 স্বয়ংক্রিয় অন্তর্দৃষ্টি")
+    st.markdown("### 💡 Auto-Generated Insights")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown(
-            "<div style='background:#fef2f2; border-left:4px solid #dc2626; "
-            "padding:1rem; border-radius:8px;'>"
-            "<b>🔴 সর্বোচ্চ চাহিদা: পাসপোর্ট নবায়ন</b><br>"
-            "সপ্তাহ ৩-এ পিক → অতিরিক্ত স্টাফ প্রয়োজন</div>",
+            "<div style='background:#fef2f2; border-left:4px solid #dc2626; padding:1rem; border-radius:8px;'>"
+            "<b>🔴 Highest Demand: Passport Renewal</b><br>"
+            "Peak in Week 3 → Additional staff needed</div>",
             unsafe_allow_html=True,
         )
-
     with col2:
         st.markdown(
-            "<div style='background:f0fdf4; border-left:4px solid #16a34a; "
-            "padding:1rem; border-radius:8px;'>"
-            "<b>🟢 NagarAI প্রভাব: ৪০.৬% আবেদন ডিজিটালি</b><br>"
-            "অফিস ভিড় কমেছে</div>",
+            "<div style='background:f0fdf4; border-left:4px solid #16a34a; padding:1rem; border-radius:8px;'>"
+            "<b>🟢 NagarAI Impact: 40.6% of applications processed digitally</b><br>"
+            "Reduced office crowding</div>",
             unsafe_allow_html=True,
         )
-
     with col3:
         st.markdown(
-            "<div style='background:#eff6ff; border-left:4px solid #2563eb; "
-            "padding:1rem; border-radius:8px;'>"
-            "<b>📈 ট্রেন্ড: NID সংশোধন চাহিদা বেশি</b><br>"
-            "নির্বাচনী বছরে স্বাভাবিক</div>",
+            "<div style='background:#eff6ff; border-left:4px solid #2563eb; padding:1rem; border-radius:8px;'>"
+            "<b>📈 Trend: NID Correction demand rising</b><br>"
+            "Expected in election years</div>",
             unsafe_allow_html=True,
         )
 
 
-# ============================================================
-# SECTION 5 — B2G value proposition
-# ============================================================
 def render_b2g_value():
-    """Bottom box showing why govt should buy NagarAI."""
+    import pandas as pd
+
     st.divider()
     st.info(
-        "🏛️ **এই ড্যাশবোর্ড সরকারি অফিসগুলোকে সাহায্য করে:**\n\n"
-        "✅ কোন সপ্তাহে অতিরিক্ত স্টাফ দরকার\n"
-        "✅ কোন সেবায় ডিজিটাল গ্রহণ কম\n"
-        "✅ নাগরিক সন্তুষ্টি রিয়েল-টাইম ট্র্যাক\n\n"
-        "**NagarAI SaaS লাইসেন্স: ৳৫-২০ লক্ষ/বছর/অফিস**"
+        "🏛️ **This dashboard helps government offices:**\n\n"
+        "✅ Identify weeks that need extra staff\n"
+        "✅ Spot services with low digital adoption\n"
+        "✅ Track citizen satisfaction in real-time\n\n"
+        "**NagarAI SaaS License: BDT 5-20 lakh/year/office**"
     )
 
-    # Comparison table (Phase 10 Enhancement 4)
     st.divider()
-    st.markdown("### ⚡ কেন NagarAI জিতে যায়")
+    st.markdown("### ⚡ Why NagarAI Wins")
 
-    comparison = {
-        "ফিচার": ["AI সহকারী", "বাংলায় গাইড", "জরুরি সেবা", "হিটম্যাপ অ্যানালিটিক্স", "লগইন ছাড়া সেবা"],
-        "myGov": ["নেই ❌", "নেই ❌", "নেই ❌", "নেই ❌", "নেই ❌"],
-        "NagarAI": ["আছে ✅", "আছে ✅", "আছে ✅", "আছে ✅", "আছে ✅"],
-    }
-    import pandas as pd
-    st.table(pd.DataFrame(comparison))
+    comparison = pd.DataFrame({
+        "Feature": ["AI Assistant", "Guided Forms", "Emergency Services", "Analytics Dashboard", "No-Login Access"],
+        "myGov": ["No ❌", "No ❌", "No ❌", "No ❌", "No ❌"],
+        "NagarAI": ["Yes ✅", "Yes ✅", "Yes ✅", "Yes ✅", "Yes ✅"],
+    })
+    st.table(comparison)
 
 
-# ============================================================
-# SIDEBAR
-# ============================================================
 def render_sidebar():
-    """Sidebar with impact metrics, demo controls, back button."""
     lang = st.session_state.lang
     metrics = load_summary()
 
-    st.sidebar.markdown("### 📊 সরকারি ড্যাশবোর্ড")
-
-    # Phase 10 Enhancement 5: Pitch metrics in sidebar
-    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 📊 Government Dashboard")
+    st.sidebar.divider()
     st.sidebar.markdown("**📈 Impact:**")
-    st.sidebar.caption(f"{metrics['total_queries_month']:,} আবেদন/মাস")
-    st.sidebar.caption(f"৪০.৬% NagarAI মাধ্যমে")
-    st.sidebar.caption(f"৳{metrics['taka_saved_estimate']:,} সাশ্রয়")
+    st.sidebar.caption(f"{metrics['total_queries_month']:,} applications/month")
+    st.sidebar.caption(f"40.6% via NagarAI")
+    st.sidebar.caption(f"BDT {metrics['taka_saved_estimate']:,} saved")
 
-    # Demo controls
     st.sidebar.markdown("---")
     st.sidebar.caption("🎬 Demo Controls")
-    if st.sidebar.button("↺ সব রিসেট করুন"):
+    if st.sidebar.button("↺ Reset All"):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         st.rerun()
 
-    # Back to home
     st.sidebar.divider()
-    if st.sidebar.button(f"🏠 {t('back_to_home', lang)}"):
+    if st.sidebar.button("🏠 Back to Home"):
         st.switch_page("NagarAI.py")
 
 
-# ============================================================
-# MAIN
-# ============================================================
 def main():
-    """Main heatmap dashboard."""
     initialize_state()
-
-    # Load custom CSS
     css_path = os.path.join(os.path.dirname(__file__), "..", "assets", "nagarai_style.css")
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:

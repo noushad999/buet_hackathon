@@ -1,9 +1,7 @@
 """
 location_mock.py — Location service with haversine distance, realistic mock data.
 
-CLASS: LocationService — get_nearest(), mock_user_location(), full Streamlit integration.
-
-Demo purpose: Realistic emergency service finder with Bengali labels, Google Maps links, open status.
+All text in English for international hackathon.
 """
 
 import json
@@ -14,8 +12,6 @@ from typing import Dict, List, Optional, Tuple
 
 import streamlit as st
 
-
-# Emergency database path
 _EMERGENCY_DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "emergency_db.json")
 
 
@@ -34,35 +30,16 @@ def _load_emergency_db() -> Dict:
         }
 
 
-# ============================================================
-# CLASS: LocationService
-# ============================================================
 class LocationService:
-    """Geo nearest-search using Haversine formula.
-
-    Demo purpose: Find nearest hospitals, pharmacies, police, photo studios
-    without real GPS. Shows Bengali labels, Google Maps links, open status.
-    """
+    """Geo nearest-search using Haversine formula."""
 
     def __init__(self):
         self._db = _load_emergency_db()
 
     @staticmethod
     def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-        """Calculate distance between two GPS coords in km.
-
-        Args:
-            lat1, lon1: Point 1
-            lat2, lon2: Point 2
-
-        Returns:
-            Distance in kilometers
-
-        Example:
-            >>> LocationService.haversine(23.7390, 90.3950, 23.7262, 90.3988)
-            1.4...  (approx 1.4 km)
-        """
-        R = 6371.0  # Earth radius in km
+        """Calculate distance between two GPS coords in km."""
+        R = 6371.0
         dlat = math.radians(lat2 - lat1)
         dlon = math.radians(lon2 - lon1)
         a = (math.sin(dlat / 2) ** 2 +
@@ -74,21 +51,20 @@ class LocationService:
         """Add distance, open status, maps URL to a location item."""
         dist = self.haversine(user_lat, user_lon, item["lat"], item["lon"])
 
-        # Open status logic
         hour = datetime.now().hour
         is_24h = item.get("open_24h", False)
 
         if is_24h:
             open_now = True
-            open_status_bn = "এখন খোলা (২৪ ঘণ্টা)"
+            open_status_bn = "Open Now (24 Hours)"
         else:
             open_hour = item.get("open_hour", 9)
             close_hour = item.get("close_hour", 17)
             open_now = open_hour <= hour < close_hour
             if open_now:
-                open_status_bn = f"এখন খোলা (বন্ধ: {close_hour}:০০)"
+                open_status_bn = f"Open Now (closes at {close_hour}:00)"
             else:
-                open_status_bn = f"এখন বন্ধ (খুলবে: {open_hour}:০০)"
+                open_status_bn = f"Closed (opens at {open_hour}:00)"
 
         maps_url = f"https://maps.google.com/?q={item['lat']},{item['lon']}"
 
@@ -101,25 +77,7 @@ class LocationService:
         }
 
     def get_nearest(self, category: str, user_lat: float, user_lon: float, limit: int = 3) -> List[Dict]:
-        """Get nearest services by category.
-
-        Args:
-            category: One of 'hospital', 'pharmacy', 'police', 'photo_studio'
-            user_lat: User latitude
-            user_lon: User longitude
-            limit: Max results
-
-        Returns:
-            List of enriched location dicts sorted by distance
-
-        Example:
-            >>> ls = LocationService()
-            >>> hospitals = ls.get_nearest("hospital", 23.7390, 90.3950, limit=3)
-            >>> len(hospitals) <= 3
-            True
-            >>> "distance_km" in hospitals[0]
-            True
-        """
+        """Get nearest services by category."""
         category_map = {
             "hospital": "hospitals",
             "pharmacy": "pharmacies",
@@ -148,103 +106,66 @@ class LocationService:
 
     @staticmethod
     def mock_user_location() -> Tuple[float, float]:
-        """Return Dhaka city center coordinates for demo.
-
-        Returns:
-            Tuple of (latitude, longitude)
-
-        Example:
-            >>> lat, lon = LocationService.mock_user_location()
-            >>> 23.0 < lat < 24.0
-            True
-            >>> 90.0 < lon < 91.0
-            True
-        """
+        """Return Dhaka city center coordinates for demo."""
         return (23.7275, 90.4074)
 
     def get_emergency_contacts(self) -> Dict:
-        """Get national emergency contact numbers.
-
-        Returns:
-            Dict with emergency contact info
-
-        Example:
-            >>> ls = LocationService()
-            >>> contacts = ls.get_emergency_contacts()
-            >>> "national_emergency" in contacts
-            True
-        """
+        """Get national emergency contact numbers."""
         return self._db.get("emergency_contacts", {})
 
 
-# ============================================================
-# Backward compatibility: legacy functions
-# ============================================================
+# Backward compatibility
 def find_nearest_hospitals(user_lat: float, user_lon: float, limit: int = 3) -> List[Dict]:
-    """Legacy function."""
     ls = LocationService()
     return ls.get_nearest("hospital", user_lat, user_lon, limit)
 
 
 def find_nearest_pharmacies(user_lat: float, user_lon: float, limit: int = 3) -> List[Dict]:
-    """Legacy function."""
     ls = LocationService()
     return ls.get_nearest("pharmacy", user_lat, user_lon, limit)
 
 
 def find_nearest_police(user_lat: float, user_lon: float, limit: int = 3) -> List[Dict]:
-    """Legacy function."""
     ls = LocationService()
     return ls.get_nearest("police", user_lat, user_lon, limit)
 
 
 def get_emergency_contacts() -> Dict:
-    """Legacy function."""
     ls = LocationService()
     return ls.get_emergency_contacts()
 
 
-# ============================================================
-# Tests
-# ============================================================
 if __name__ == "__main__":
     print("=== Location Service Test ===\n")
 
     ls = LocationService()
 
-    # Test 1: Hospitals found
     hospitals = ls.get_nearest("hospital", 23.7390, 90.3950, limit=3)
     assert len(hospitals) > 0
     assert "distance_km" in hospitals[0]
     print(f"✅ Test 1 PASSED: {len(hospitals)} hospitals found")
 
-    # Test 2: Pharmacies found
     pharmacies = ls.get_nearest("pharmacy", 23.7390, 90.3950, limit=3)
     assert len(pharmacies) > 0
     print(f"✅ Test 2 PASSED: {len(pharmacies)} pharmacies found")
 
-    # Test 3: Police found
     police = ls.get_nearest("police", 23.7390, 90.3950, limit=3)
     assert len(police) > 0
     print(f"✅ Test 3 PASSED: {len(police)} police stations found")
 
-    # Test 4: Mock location
     lat, lon = ls.mock_user_location()
     assert 23.0 < lat < 24.0
     assert 90.0 < lon < 91.0
     print(f"✅ Test 4 PASSED: Mock location ({lat}, {lon})")
 
-    # Test 5: Emergency contacts
     contacts = ls.get_emergency_contacts()
     assert "national_emergency" in contacts
     print(f"✅ Test 5 PASSED: Emergency contacts loaded (999)")
 
-    # Test 6: Distance calculation
     dist = ls.haversine(23.7390, 90.3950, 23.7262, 90.3988)
     assert 0.5 < dist < 3.0
     print(f"✅ Test 6 PASSED: Distance = {dist:.2f} km")
 
-    # Test 7: Open status
     h = hospitals[0]
     assert "open_status_bn" in h
     assert "maps_url" in h

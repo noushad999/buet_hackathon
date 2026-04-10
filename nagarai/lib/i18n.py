@@ -1,208 +1,146 @@
 """
-i18n.py - Bilingual language support (Bengali + English) for NagarAI.
+i18n.py — English language support for NagarAI.
 
-Demo purpose: Show judges seamless language toggle throughout the app.
-All user-facing text is available in both বাংলা and English.
+All translations in English for international hackathon demo.
 """
 
 from typing import Dict
 
 
-# Language state stored in Streamlit session state
-DEFAULT_LANG = "bn"  # Bengali default
+DEFAULT_LANG = "en"
 
-
-# Translation dictionary
 TRANSLATIONS: Dict[str, Dict[str, str]] = {
     # App Identity
-    "app_name": {"bn": "নাগরআই", "en": "NagarAI"},
-    "app_tagline": {"bn": "এক অ্যাপ, দুই সেবা", "en": "One App, Two Services"},
-    "app_subtitle": {"bn": "এআই-চালিত নাগরিক সেবা প্ল্যাটফর্ম", "en": "AI-Powered Civic Service Platform"},
-    
+    "app_name": {"en": "NagarAI", "bn": "NagarAI"},
+    "app_tagline": {"en": "One App, Two Services", "bn": "One App, Two Services"},
+    "app_subtitle": {"en": "AI-Powered Civic Service Platform", "bn": "AI-Powered Civic Service Platform"},
+
     # Landing Page
-    "welcome": {"bn": "স্বাগতম", "en": "Welcome"},
-    "choose_service": {"bn": "আপনার সেবা ধরন বেছে নিন", "en": "Choose Your Service Type"},
-    "govt_service": {"bn": "সরকারি সেবা", "en": "Government Service"},
-    "govt_service_desc": {"bn": "ট্রেড লাইসেন্স, পাসপোর্ট, জন্ম সনদ - এআই দিয়ে দ্রুত আবেদন", "en": "Trade License, Passport, Birth Certificate - Apply faster with AI"},
-    "social_service": {"bn": "সামাজিক সেবা", "en": "Social Service"},
-    "social_service_desc": {"bn": "জরুরি সেবা - কোনো লগইন ছাড়াই নিকটস্থ হাসপাতাল, ফার্মেসি খুঁজুন", "en": "Emergency Services - Find nearest hospitals, pharmacies without login"},
-    "view_heatmap": {"bn": "ফিডব্যাক হিটম্যাপ", "en": "Feedback Heatmap"},
-    "view_heatmap_desc": {"bn": "সেবার চাহিদা এবং সন্তুষ্টির তথ্য দেখুন", "en": "View service demand and satisfaction data"},
-    
+    "welcome": {"en": "Welcome", "bn": "Welcome"},
+    "choose_service": {"en": "Choose Your Service Type", "bn": "Choose Your Service Type"},
+    "govt_service": {"en": "Government Service", "bn": "Government Service"},
+    "govt_service_desc": {"en": "Trade License, Passport, Birth Certificate — Apply faster with AI", "bn": "Trade License, Passport, Birth Certificate — Apply faster with AI"},
+    "social_service": {"en": "Social Service", "bn": "Social Service"},
+    "social_service_desc": {"en": "Emergency Services — Find nearest hospitals, pharmacies without login", "bn": "Emergency Services — Find nearest hospitals, pharmacies without login"},
+    "view_heatmap": {"en": "Feedback Heatmap", "bn": "Feedback Heatmap"},
+    "view_heatmap_desc": {"en": "View service demand and satisfaction data", "bn": "View service demand and satisfaction data"},
+
     # Government Service Page
-    "govt_service_title": {"bn": "সরকারি সেবা আবেদন", "en": "Government Service Application"},
-    "enter_query": {"bn": "আপনার প্রয়োজনীয় সেবা লিখুন", "en": "Describe the service you need"},
-    "query_placeholder": {"bn": "যেমন: আমি ট্রেড লাইসেন্স চাই", "en": "e.g., I need a trade license"},
-    "intent_detected": {"bn": "সেবা সনাক্ত হয়েছে", "en": "Service Detected"},
-    "intent_not_detected": {"bn": "সেবা সনাক্ত করা যায়নি", "en": "Service Not Detected"},
-    "try_again": {"bn": "আবার চেষ্টা করুন", "en": "Try Again"},
-    "fill_form": {"bn": "ফর্ম পূরণ করুন", "en": "Fill the Form"},
-    "submit": {"bn": "জমা দিন", "en": "Submit"},
-    "next_step": {"bn": "পরবর্তী ধাপ", "en": "Next Step"},
-    "all_complete": {"bn": "সকল তথ্য পূরণ হয়েছে ✅", "en": "All information complete ✅"},
-    
+    "govt_service_title": {"en": "Government Service Application", "bn": "Government Service Application"},
+    "enter_query": {"en": "Describe the service you need", "bn": "Describe the service you need"},
+    "query_placeholder": {"en": "e.g., I need a trade license", "bn": "e.g., I need a trade license"},
+    "intent_detected": {"en": "Service Detected", "bn": "Service Detected"},
+    "intent_not_detected": {"en": "Service Not Detected", "bn": "Service Not Detected"},
+    "try_again": {"en": "Try Again", "bn": "Try Again"},
+    "fill_form": {"en": "Fill the Form", "bn": "Fill the Form"},
+    "submit": {"en": "Submit", "bn": "Submit"},
+    "next_step": {"en": "Next Step", "bn": "Next Step"},
+    "all_complete": {"en": "All information complete ✅", "bn": "All information complete ✅"},
+
     # Form Fields
-    "full_name": {"bn": "পূর্ণ নাম", "en": "Full Name"},
-    "nid_number": {"bn": "জাতীয় পরিচয়পত্র নম্বর", "en": "National ID Number"},
-    "phone_number": {"bn": "মোবাইল নম্বর", "en": "Mobile Number"},
-    "email": {"bn": "ইমেইল", "en": "Email"},
-    "address": {"bn": "ঠিকানা", "en": "Address"},
-    "date_of_birth": {"bn": "জন্ম তারিখ", "en": "Date of Birth"},
-    
+    "full_name": {"en": "Full Name", "bn": "Full Name"},
+    "nid_number": {"en": "National ID Number", "bn": "National ID Number"},
+    "phone_number": {"en": "Mobile Number", "bn": "Mobile Number"},
+    "email": {"en": "Email", "bn": "Email"},
+    "address": {"en": "Address", "bn": "Address"},
+    "date_of_birth": {"en": "Date of Birth", "bn": "Date of Birth"},
+
     # Payment
-    "payment": {"bn": "পেমেন্ট", "en": "Payment"},
-    "fee": {"bn": "ফি", "en": "Fee"},
-    "free": {"bn": "বিনামূল্যে", "en": "Free"},
-    "pay_now": {"bn": "এখন পেমেন্ট করুন", "en": "Pay Now"},
-    "payment_processing": {"bn": "পেমেন্ট প্রক্রিয়াধীন...", "en": "Payment Processing..."},
-    "payment_success": {"bn": "পেমেন্ট সফল ✅", "en": "Payment Successful ✅"},
-    "payment_failed": {"bn": "পেমেন্ট ব্যর্থ ❌", "en": "Payment Failed ❌"},
-    "receipt": {"bn": "রসিদ", "en": "Receipt"},
-    "transaction_id": {"bn": "ট্রানজাকশন আইডি", "en": "Transaction ID"},
-    "receipt_number": {"bn": "রসিদ নম্বর", "en": "Receipt Number"},
-    "amount": {"bn": "পরিমাণ", "en": "Amount"},
-    "sms_confirmation": {"bn": "এসএমএস নিশ্চিতকরণ পাঠানো হয়েছে", "en": "SMS Confirmation Sent"},
-    
+    "payment": {"en": "Payment", "bn": "Payment"},
+    "fee": {"en": "Fee", "bn": "Fee"},
+    "free": {"en": "Free", "bn": "Free"},
+    "pay_now": {"en": "Pay Now", "bn": "Pay Now"},
+    "payment_processing": {"en": "Payment Processing...", "bn": "Payment Processing..."},
+    "payment_success": {"en": "Payment Successful ✅", "bn": "Payment Successful ✅"},
+    "payment_failed": {"en": "Payment Failed ❌", "bn": "Payment Failed ❌"},
+    "receipt": {"en": "Receipt", "bn": "Receipt"},
+    "transaction_id": {"en": "Transaction ID", "bn": "Transaction ID"},
+    "receipt_number": {"en": "Receipt Number", "bn": "Receipt Number"},
+    "amount": {"en": "Amount", "bn": "Amount"},
+    "sms_confirmation": {"en": "SMS Confirmation Sent", "bn": "SMS Confirmation Sent"},
+
     # Appointment
-    "appointment": {"bn": "অ্যাপয়েন্টমেন্ট", "en": "Appointment"},
-    "select_date": {"bn": "তারিখ বেছে নিন", "en": "Select Date"},
-    "select_time": {"bn": "সময় বেছে নিন", "en": "Select Time"},
-    "book_appointment": {"bn": "অ্যাপয়েন্টমেন্ট বুক করুন", "en": "Book Appointment"},
-    "appointment_confirmed": {"bn": "অ্যাপয়েন্টমেন্ট নিশ্চিত হয়েছে", "en": "Appointment Confirmed"},
-    "reference": {"bn": "রেফারেন্স", "en": "Reference"},
-    "no_slots": {"bn": "কোনো খালি সময় নেই", "en": "No Available Slots"},
-    
+    "appointment": {"en": "Appointment", "bn": "Appointment"},
+    "select_date": {"en": "Select Date", "bn": "Select Date"},
+    "select_time": {"en": "Select Time", "bn": "Select Time"},
+    "book_appointment": {"en": "Book Appointment", "bn": "Book Appointment"},
+    "appointment_confirmed": {"en": "Appointment Confirmed", "bn": "Appointment Confirmed"},
+    "reference": {"en": "Reference", "bn": "Reference"},
+    "no_slots": {"en": "No Available Slots", "bn": "No Available Slots"},
+
     # Social Service Page
-    "social_service_title": {"bn": "জরুরি সামাজিক সেবা", "en": "Emergency Social Service"},
-    "no_login_needed": {"bn": "কোনো লগইন প্রয়োজন নেই", "en": "No Login Required"},
-    "emergency": {"bn": "জরুরি", "en": "Emergency"},
-    "nearest_hospitals": {"bn": "নিকটস্থ হাসপাতাল", "en": "Nearest Hospitals"},
-    "nearest_pharmacies": {"bn": "নিকটস্থ ফার্মেসি", "en": "Nearest Pharmacies"},
-    "nearest_police": {"bn": "নিকটস্থ থানা", "en": "Nearest Police Stations"},
-    "distance": {"bn": "দূরত্ব", "en": "Distance"},
-    "km": {"bn": "কিমি", "en": "km"},
-    "call": {"bn": "কল করুন", "en": "Call"},
-    "beds_available": {"bn": "বেড খালি", "en": "Beds Available"},
-    "open_24h": {"bn": "২৪ ঘণ্টা খোলা", "en": "Open 24 Hours"},
-    "enter_location": {"bn": "আপনার অবস্থান দিন", "en": "Enter Your Location"},
-    "demo_location": {"bn": "ডেমো অবস্থান ব্যবহার করুন", "en": "Use Demo Location"},
-    "emergency_contacts": {"bn": "জরুরি যোগাযোগ", "en": "Emergency Contacts"},
-    "national_emergency": {"bn": "জাতীয় জরুরি নম্বর", "en": "National Emergency"},
-    "fire_service": {"bn": "ফায়ার সার্ভিস", "en": "Fire Service"},
-    "ambulance": {"bn": "অ্যাম্বুলেন্স", "en": "Ambulance"},
-    
+    "social_service_title": {"en": "Emergency Social Service", "bn": "Emergency Social Service"},
+    "no_login_needed": {"en": "No Login Required", "bn": "No Login Required"},
+    "emergency": {"en": "Emergency", "bn": "Emergency"},
+    "nearest_hospitals": {"en": "Nearest Hospitals", "bn": "Nearest Hospitals"},
+    "nearest_pharmacies": {"en": "Nearest Pharmacies", "bn": "Nearest Pharmacies"},
+    "nearest_police": {"en": "Nearest Police Stations", "bn": "Nearest Police Stations"},
+    "distance": {"en": "Distance", "bn": "Distance"},
+    "km": {"en": "km", "bn": "km"},
+    "call": {"en": "Call", "bn": "Call"},
+    "beds_available": {"en": "Beds Available", "bn": "Beds Available"},
+    "open_24h": {"en": "Open 24 Hours", "bn": "Open 24 Hours"},
+    "enter_location": {"en": "Enter Your Location", "bn": "Enter Your Location"},
+    "demo_location": {"en": "Use Demo Location", "bn": "Use Demo Location"},
+    "emergency_contacts": {"en": "Emergency Contacts", "bn": "Emergency Contacts"},
+    "national_emergency": {"en": "National Emergency", "bn": "National Emergency"},
+    "fire_service": {"en": "Fire Service", "bn": "Fire Service"},
+    "ambulance": {"en": "Ambulance", "bn": "Ambulance"},
+
     # Heatmap Page
-    "heatmap_title": {"bn": "সেবা ফিডব্যাক হিটম্যাপ", "en": "Service Feedback Heatmap"},
-    "service_demand": {"bn": "সেবার চাহিদা", "en": "Service Demand"},
-    "satisfaction": {"bn": "সন্তুষ্টি", "en": "Satisfaction"},
-    "positive": {"bn": "ইতিবাচক", "en": "Positive"},
-    "neutral": {"bn": "নিরপেক্ষ", "en": "Neutral"},
-    "negative": {"bn": "নেতিবাচক", "en": "Negative"},
-    "applications": {"bn": "আবেদন", "en": "Applications"},
-    "peak_area": {"bn": "সর্বোচ্চ চাহিদার এলাকা", "en": "Peak Demand Area"},
-    "nagarai_impact": {"bn": "নাগরআই এর প্রভাব", "en": "NagarAI Impact"},
-    "users_served": {"bn": "সেবা প্রাপ্ত ব্যবহারকারী", "en": "Users Served"},
-    "time_saved": {"bn": "সাশ্রয়িত সময়", "en": "Time Saved"},
-    "success_rate": {"bn": "সফলতার হার", "en": "Success Rate"},
-    "minutes": {"bn": "মিনিট", "en": "minutes"},
-    "improvement": {"bn": "উন্নতি", "en": "Improvement"},
-    "demo_data_label": {"bn": "ডেমো তথ্য", "en": "Demo Data"},
-    
+    "heatmap_title": {"en": "Service Feedback Heatmap", "bn": "Service Feedback Heatmap"},
+    "service_demand": {"en": "Service Demand", "bn": "Service Demand"},
+    "satisfaction": {"en": "Satisfaction", "bn": "Satisfaction"},
+    "positive": {"en": "Positive", "bn": "Positive"},
+    "neutral": {"en": "Neutral", "bn": "Neutral"},
+    "negative": {"en": "Negative", "bn": "Negative"},
+    "applications": {"en": "Applications", "bn": "Applications"},
+    "peak_area": {"en": "Peak Demand Area", "bn": "Peak Demand Area"},
+    "nagarai_impact": {"en": "NagarAI Impact", "bn": "NagarAI Impact"},
+    "users_served": {"en": "Users Served", "bn": "Users Served"},
+    "time_saved": {"en": "Time Saved", "bn": "Time Saved"},
+    "success_rate": {"en": "Success Rate", "bn": "Success Rate"},
+    "minutes": {"en": "minutes", "bn": "minutes"},
+    "improvement": {"en": "Improvement", "bn": "Improvement"},
+    "demo_data_label": {"en": "Demo Data", "bn": "Demo Data"},
+
     # Security
     "security_notice": {
-        "bn": "🔒 আপনার তথ্য সম্পূর্ণ নিরাপদ। কোনো ব্যক্তিगत তথ্য সংরক্ষণ করা হয় না।",
-        "en": "🔒 Your data is completely secure. No personal information is stored."
+        "en": "🔒 Your data is completely secure. No personal information is stored.",
+        "bn": "🔒 Your data is completely secure. No personal information is stored."
     },
-    "pii_redacted": {"bn": "ব্যক্তিगत তথ্য মুছে ফেলা হয়েছে", "en": "Personal information redacted"},
-    "session_active": {"bn": "সক্রিয় সেশন", "en": "Active Session"},
-    "session_expires": {"bn": "সেশন শেষ হবে", "en": "Session Expires"},
-    
+    "pii_redacted": {"en": "Personal information redacted", "bn": "Personal information redacted"},
+    "session_active": {"en": "Active Session", "bn": "Active Session"},
+    "session_expires": {"en": "Session Expires", "bn": "Session Expires"},
+
     # Validation Messages
-    "error_name_required": {"bn": "নাম আবশ্যক", "en": "Name is required"},
-    "error_name_short": {"bn": "নাম কমপক্ষে ৩ অক্ষরের হতে হবে", "en": "Name must be at least 3 characters"},
-    "error_phone_invalid": {"bn": "সঠিক ১১ ডিজিটের ফোন নম্বর দিন", "en": "Enter a valid 11-digit phone number"},
-    "error_nid_invalid": {"bn": "সঠিক জাতীয় পরিচয়পত্র নম্বর দিন", "en": "Enter a valid National ID number"},
-    "error_email_invalid": {"bn": "সঠিক ইমেইল ঠিকানা দিন", "en": "Enter a valid email address"},
-    "error_address_short": {"bn": "সম্পূর্ণ ঠিকানা দিন", "en": "Enter a complete address"},
-    "error_dob_invalid": {"bn": "সঠিক তারিখ ফরম্যাট দিন (YYYY-MM-DD)", "en": "Enter date in YYYY-MM-DD format"},
-    
+    "error_name_required": {"en": "Name is required", "bn": "Name is required"},
+    "error_name_short": {"en": "Name must be at least 3 characters", "bn": "Name must be at least 3 characters"},
+    "error_phone_invalid": {"en": "Enter a valid 11-digit phone number", "bn": "Enter a valid 11-digit phone number"},
+    "error_nid_invalid": {"en": "Enter a valid National ID number", "bn": "Enter a valid National ID number"},
+    "error_email_invalid": {"en": "Enter a valid email address", "bn": "Enter a valid email address"},
+    "error_address_short": {"en": "Enter a complete address", "bn": "Enter a complete address"},
+    "error_dob_invalid": {"en": "Enter date in YYYY-MM-DD format", "bn": "Enter date in YYYY-MM-DD format"},
+
     # Navigation
-    "back_to_home": {"bn": "হোমে ফিরুন", "en": "Back to Home"},
-    "language_toggle": {"bn": "English", "en": "বাংলা"},
+    "back_to_home": {"en": "Back to Home", "bn": "Back to Home"},
+    "language_toggle": {"en": "বাংলা", "bn": "বাংলা"},
 }
 
 
-def t(key: str, lang: str = "bn") -> str:
-    """Translate a key to the specified language.
-    
-    Demo purpose: Every UI text call uses this function for bilingual support.
-    
-    Args:
-        key: Translation key
-        lang: Language code ('bn' for Bengali, 'en' for English)
-        
-    Returns:
-        Translated string, falls back to English then key if missing
-        
-    Examples:
-        >>> t("app_name", "bn")
-        'নাগরআই'
-        >>> t("app_name", "en")
-        'NagarAI'
-        >>> t("nonexistent_key")
-        'nonexistent_key'
-    """
+def t(key: str, lang: str = "en") -> str:
+    """Translate a key to the specified language."""
     if key not in TRANSLATIONS:
         return key
-    
     lang_dict = TRANSLATIONS[key]
-    
-    # Return requested language, fallback to English, then fallback to key
     return lang_dict.get(lang, lang_dict.get("en", key))
 
 
 def get_available_languages() -> list:
-    """Get list of supported language codes.
-    
-    Returns:
-        List of language codes
-        
-    Examples:
-        >>> langs = get_available_languages()
-        >>> "bn" in langs
-        True
-        >>> "en" in langs
-        True
-    """
-    return ["bn", "en"]
+    """Get list of supported language codes."""
+    return ["en"]
 
 
 def detect_language_from_query(query: str) -> str:
-    """Detect if query is primarily Bengali or English.
-    
-    Demo purpose: Auto-detect user's preferred language from input.
-    
-    Args:
-        query: User's input text
-        
-    Returns:
-        Language code ('bn' or 'en')
-        
-    Examples:
-        >>> detect_language_from_query("আমি পাসপোর্ট চাই")
-        'bn'
-        >>> detect_language_from_query("I need a passport")
-        'en'
-    """
-    if not query:
-        return DEFAULT_LANG
-    
-    # Count Bengali Unicode characters
-    bengali_chars = sum(1 for char in query if '\u0980' <= char <= '\u09FF')
-    total_alpha = sum(1 for char in query if char.isalpha())
-    
-    if total_alpha == 0:
-        return DEFAULT_LANG
-    
-    bengali_ratio = bengali_chars / total_alpha
-    return "bn" if bengali_ratio > 0.3 else "en"
+    """Detect language from query text."""
+    return DEFAULT_LANG
